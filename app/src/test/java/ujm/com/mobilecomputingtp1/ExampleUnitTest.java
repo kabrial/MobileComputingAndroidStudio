@@ -1,4 +1,4 @@
-package example.com.mobilecomputingtp1;
+package ujm.com.mobilecomputingtp1;
 
 import org.junit.Test;
 
