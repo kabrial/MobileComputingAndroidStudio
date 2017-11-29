@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Application Contacts</string>
     <string name="title_home">Home</string>
-    <string name="title_authors">Authors: Xavier NAUNAY and Kevin ABRIAL (Master 2 DSC).</string>
+    <string name="title_authors">Authors: Xavier NAUNAY and Kevin ABRIAL (Master 2 DSC). Welcome User, this application contacts is to use for create automatic calls</string>
     <string name="title_notifications">Notifications</string>
     <string name="action_close">Close</string>
 </resources>
