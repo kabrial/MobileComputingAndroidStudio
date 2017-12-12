@@ -16,9 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -42,6 +45,13 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
 
     Context context;
 
+    //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
+    // Initializing a new String Array
+    final List<String> listNotifications = new ArrayList<String>();
+
+    //RECORDING HOW MANY TIMES THE BUTTON HAS BEEN CLICKED
+    int clickCounter=0;
+
     public static CallNotification newInstance() {
         CallNotification fragment = new CallNotification();
         return fragment;
@@ -54,6 +64,8 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
         final Button Send = view.findViewById(R.id.Send);
 
         final Button Cancel = view.findViewById(R.id.Cancel);
+
+
 
         // Initialize AutoCompleteTextView values
 
@@ -76,6 +88,14 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
         // Read contact data and add data to ArrayAdapter
         // ArrayAdapter used by AutoCompleteTextView
 
+        ListView mListView;
+
+        mListView = view.findViewById(R.id.listView);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_list_item_1, listNotifications);
+        mListView.setAdapter(adapter);
+
         readContactData();
 
 
@@ -87,6 +107,16 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
 
         context = this.getActivity().getBaseContext();
 
+        Send.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                clickCounter++;
+                listNotifications.add("Contact Number : "+ clickCounter + "\nName or Number: " + textView.getText().toString()+ "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
+                adapter.notifyDataSetChanged();
+            }
+        });
 
         return view;
     }
