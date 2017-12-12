@@ -1,14 +1,15 @@
 package ujm.com.mobilecomputingtp1;
 
-import java.util.ArrayList;
-import android.app.Activity;
+import android.app.Fragment;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,50 +17,55 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 
-public class AutoCompleteMain extends Activity implements  OnItemClickListener, OnItemSelectedListener  {
+import java.util.ArrayList;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
+public class CallNotification extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     // Initialize variables
 
-    AutoCompleteTextView textView=null;
+    AutoCompleteTextView textView = null;
     private ArrayAdapter<String> adapter;
 
     // Store contacts values in these arraylist
     public static ArrayList<String> phoneValueArr = new ArrayList<String>();
     public static ArrayList<String> nameValueArr = new ArrayList<String>();
 
-    EditText toNumber=null;
-    String toNumberValue="";
+    EditText toNumber = null;
+    String toNumberValue = "";
 
 
-    EditText datesTextView=null;
-    EditText timesTextView=null;
+    EditText datesTextView = null;
+    EditText timesTextView = null;
 
-    /** Called when the activity is first created. */
+    Context context;
+
+    public static CallNotification newInstance() {
+        CallNotification fragment = new CallNotification();
+        return fragment;
+    }
+
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_call_notification, container, false);
+        final Button Send = view.findViewById(R.id.Send);
 
-        setContentView(R.layout.autocomplete_main);
-
-        final Button Send = (Button) findViewById(R.id.Send);
-
-        final Button Cancel = (Button) findViewById(R.id.Cancel);
-
+        final Button Cancel = view.findViewById(R.id.Cancel);
 
         // Initialize AutoCompleteTextView values
 
-        textView = (AutoCompleteTextView) findViewById(R.id.toNumber);
+        textView = (AutoCompleteTextView) view.findViewById(R.id.toNumber);
 
         // Initialize EditText values
-        datesTextView = findViewById(R.id.dates);
-        timesTextView = findViewById(R.id.times);
+        datesTextView = view.findViewById(R.id.dates);
+        timesTextView = view.findViewById(R.id.times);
 
         //Create adapter
         adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_dropdown_item_1line, new ArrayList<String>());
+                (this.getActivity(), android.R.layout.simple_dropdown_item_1line, new ArrayList<String>());
         textView.setThreshold(1);
 
         //Set adapter to AutoCompleteTextView
@@ -78,10 +84,15 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
 
         /********** Button Click clear textView object ***********/
         Cancel.setOnClickListener(BtnActionClearInput(textView));
+
+        context = this.getActivity().getBaseContext();
+
+
+        return view;
     }
 
-    private OnClickListener BtnActionClearInput(final AutoCompleteTextView toNumber) {
-        return new OnClickListener() {
+    private View.OnClickListener BtnActionClearInput(final AutoCompleteTextView toNumber) {
+        return new View.OnClickListener() {
 
             public void onClick(View v) {
                 toNumber.getText().clear();
@@ -91,8 +102,8 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
         };
     }
 
-    private OnClickListener BtnAction(final AutoCompleteTextView toNumber) {
-        return new OnClickListener() {
+    private View.OnClickListener BtnAction(final AutoCompleteTextView toNumber) {
+        return new View.OnClickListener() {
 
             public void onClick(View v) {
 
@@ -103,13 +114,11 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
                 final String ToNumber = toNumberValue;
 
 
-                if (ToNumber.length() == 0 ) {
-                    Toast.makeText(getBaseContext(), "Please fill phone number",
+                if (ToNumber.length() == 0) {
+                    Toast.makeText(context, "Please fill phone number",
                             Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(getBaseContext(), NameSel+" : "+toNumberValue,
+                } else {
+                    Toast.makeText(context, NameSel + " : " + toNumberValue,
                             Toast.LENGTH_LONG).show();
                 }
 
@@ -127,7 +136,7 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
             /*********** Reading Contacts Name And Number **********/
 
             String phoneNumber = "";
-            ContentResolver cr = getBaseContext()
+            ContentResolver cr = this.getActivity().getBaseContext()
                     .getContentResolver();
 
             //Query to get contact name
@@ -144,11 +153,10 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
 
                 Log.i("AutocompleteContacts", "Reading   contacts........");
 
-                int k=0;
+                int k = 0;
                 String name = "";
 
-                while (cur.moveToNext())
-                {
+                while (cur.moveToNext()) {
 
                     String id = cur
                             .getString(cur
@@ -161,8 +169,7 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
                     if (Integer
                             .parseInt(cur
                                     .getString(cur
-                                            .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
-                    {
+                                            .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
 
                         //Create query to get phone number by contact id
                         Cursor pCur = cr
@@ -170,18 +177,16 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
                                         null,
                                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID
                                                 + " = ?",
-                                        new String[] { id },
+                                        new String[]{id},
                                         null);
-                        int j=0;
+                        int j = 0;
 
                         while (pCur
-                                .moveToNext())
-                        {
+                                .moveToNext()) {
                             // Sometimes get multiple data
-                            if(j==0)
-                            {
+                            if (j == 0) {
                                 // Get Phone number
-                                phoneNumber =""+pCur.getString(pCur
+                                phoneNumber = "" + pCur.getString(pCur
                                         .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
                                 // Add contacts names to adapter
@@ -205,7 +210,7 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
 
 
         } catch (Exception e) {
-            Log.i("AutocompleteContacts","Exception : "+ e);
+            Log.i("AutocompleteContacts", "Exception : " + e);
         }
 
 
@@ -222,9 +227,9 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
 
-        InputMethodManager imm = (InputMethodManager) getSystemService(
+        InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(
                 INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(), 0);
 
     }
 
@@ -233,7 +238,7 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
         // TODO Auto-generated method stub
 
         // Get Array index value for selected name
-        int i = nameValueArr.indexOf(""+arg0.getItemAtPosition(arg2));
+        int i = nameValueArr.indexOf("" + arg0.getItemAtPosition(arg2));
 
         // If name exist in name ArrayList
         if (i >= 0) {
@@ -241,28 +246,19 @@ public class AutoCompleteMain extends Activity implements  OnItemClickListener, 
             // Get Phone Number
             toNumberValue = phoneValueArr.get(i);
 
-            InputMethodManager imm = (InputMethodManager) getSystemService(
+            InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(
                     INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(), 0);
 
             // Show Alert
-            Toast.makeText(getBaseContext(),
-                    "Position:"+arg2+" Name:"+arg0.getItemAtPosition(arg2)+" Number:"+toNumberValue,
+            Toast.makeText(this.getActivity().getBaseContext(),
+                    "Position:" + arg2 + " Name:" + arg0.getItemAtPosition(arg2) + " Number:" + toNumberValue,
                     Toast.LENGTH_LONG).show();
 
             Log.d("AutocompleteContacts",
-                    "Position:"+arg2+" Name:"+arg0.getItemAtPosition(arg2)+" Number:"+toNumberValue);
+                    "Position:" + arg2 + " Name:" + arg0.getItemAtPosition(arg2) + " Number:" + toNumberValue);
 
         }
 
     }
-
-    protected void onResume() {
-        super.onResume();
-    }
-
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 }

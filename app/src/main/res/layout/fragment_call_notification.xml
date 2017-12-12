@@ -56,7 +56,8 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:width="86dip"
             android:clickable="true"
-            android:text="Ok" />
+            android:text="@string/ok"
+            android:focusable="true" />
 
     </TableRow>
 
@@ -70,7 +71,8 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:width="86dip"
             android:clickable="true"
-            android:text="Cancel" />
+            android:text="@string/cancel"
+            android:focusable="true" />
     </TableRow>
 
     <TableRow

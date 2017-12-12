@@ -1,6 +1,7 @@
 package ujm.com.mobilecomputingtp1;
 
-import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,12 +19,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_authors);
+                    selectedFragment = Authors.newInstance();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame, selectedFragment);
+                    transaction.commit();
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    selectedFragment = CallNotification.newInstance();
+                    transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame, selectedFragment);
+                    transaction.commit();
                     return true;
             }
             return false;
@@ -38,10 +46,15 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Fragment selectedFragment = Authors.newInstance();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame, selectedFragment);
+        transaction.commit();
     }
 
     /**
      * Function to create the menu in the action bar.
+     *
      * @param menu
      * @return
      */
@@ -54,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Function for item select on the action bar.
+     *
      * @param item
      * @return
      */
