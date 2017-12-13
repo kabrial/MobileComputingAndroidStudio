@@ -88,8 +88,6 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
 
         mListView = view.findViewById(R.id.listView);
         final ListsAdapter listsAdapter = new ListsAdapter(this.getActivity(), listNotifications);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_list_item_1, listNotifications);
         mListView.setAdapter(listsAdapter);
 
         readContactData();
@@ -114,10 +112,17 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
             @Override
             public void onClick(View view) {
                 String selectedName = textView.getText().toString();
-//                final String toNumber = toNumberValue;
-                if (selectedName.length() == 0) {
+                String selectedDate = datesTextView.getText().toString();
+                String selectedTimes = timesTextView.getText().toString();
+                if (selectedName.length() == 0){
                     Toast.makeText(view.getContext(), "Please fill phone number",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
+                } else if (selectedDate.length() == 0) {
+                    Toast.makeText(view.getContext(), "Please fill date",
+                            Toast.LENGTH_LONG).show();
+                } else if (selectedTimes.length() == 0) {
+                    Toast.makeText(view.getContext(), "Please fill times",
+                            Toast.LENGTH_LONG).show();
                 } else {
                     clickCounter++;
                     listNotifications.add("Contact Number : " + clickCounter + "\nName or Number: " + textView.getText().toString() + "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
