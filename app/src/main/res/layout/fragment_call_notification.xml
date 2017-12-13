@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:textColor="#000000"
             android:textColorLink="#000000"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:hint="Number..."/>
     </TableRow>
 
     <TableRow
@@ -29,7 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="date" />
+            android:inputType="date"
+            android:hint="Date..."/>
     </TableRow>
 
     <TableRow
@@ -42,7 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="time"></EditText>
+            android:inputType="time"
+            android:hint="Times..."/>
     </TableRow>
 
     <TableRow
