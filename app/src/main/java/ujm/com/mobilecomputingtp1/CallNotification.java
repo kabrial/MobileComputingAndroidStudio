@@ -91,10 +91,10 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
         ListView mListView;
 
         mListView = view.findViewById(R.id.listView);
-
+ final ListsAdapter listsAdapter = new ListsAdapter(this.getActivity(), listNotifications);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_list_item_1, listNotifications);
-        mListView.setAdapter(adapter);
+        mListView.setAdapter(listsAdapter);
 
         readContactData();
 
@@ -114,7 +114,7 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
                 // TODO Auto-generated method stub
                 clickCounter++;
                 listNotifications.add("Contact Number : "+ clickCounter + "\nName or Number: " + textView.getText().toString()+ "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
-                adapter.notifyDataSetChanged();
+                listsAdapter.notifyDataSetChanged();
             }
         });
 
