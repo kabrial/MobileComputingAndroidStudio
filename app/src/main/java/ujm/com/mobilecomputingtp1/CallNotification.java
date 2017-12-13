@@ -2,16 +2,18 @@ package ujm.com.mobilecomputingtp1;
 
 import android.app.Fragment;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -20,12 +22,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
-public class CallNotification extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class CallNotification extends Fragment implements OnItemClickListener, OnItemSelectedListener {
 
     // Initialize variables
 
@@ -33,24 +34,21 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
     private ArrayAdapter<String> adapter;
 
     // Store contacts values in these arraylist
-    public static ArrayList<String> phoneValueArr = new ArrayList<String>();
-    public static ArrayList<String> nameValueArr = new ArrayList<String>();
+    public static ArrayList<String> phoneValueArr = new ArrayList<>();
+    public static ArrayList<String> nameValueArr = new ArrayList<>();
 
-    EditText toNumber = null;
     String toNumberValue = "";
 
 
     EditText datesTextView = null;
     EditText timesTextView = null;
 
-    Context context;
-
     //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
     // Initializing a new String Array
-    final List<String> listNotifications = new ArrayList<String>();
+    final List<String> listNotifications = new ArrayList<>();
 
     //RECORDING HOW MANY TIMES THE BUTTON HAS BEEN CLICKED
-    int clickCounter=0;
+    int clickCounter = 0;
 
     public static CallNotification newInstance() {
         CallNotification fragment = new CallNotification();
@@ -62,22 +60,20 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_call_notification, container, false);
         final Button Send = view.findViewById(R.id.Send);
-
         final Button Cancel = view.findViewById(R.id.Cancel);
-
 
 
         // Initialize AutoCompleteTextView values
 
-        textView = (AutoCompleteTextView) view.findViewById(R.id.toNumber);
+        textView = view.findViewById(R.id.toNumber);
 
         // Initialize EditText values
         datesTextView = view.findViewById(R.id.dates);
         timesTextView = view.findViewById(R.id.times);
 
         //Create adapter
-        adapter = new ArrayAdapter<String>
-                (this.getActivity(), android.R.layout.simple_dropdown_item_1line, new ArrayList<String>());
+        adapter = new ArrayAdapter<>
+                (view.getContext(), android.R.layout.simple_dropdown_item_1line, new ArrayList<String>());
         textView.setThreshold(1);
 
         //Set adapter to AutoCompleteTextView
@@ -91,67 +87,44 @@ public class CallNotification extends Fragment implements AdapterView.OnItemClic
         ListView mListView;
 
         mListView = view.findViewById(R.id.listView);
- final ListsAdapter listsAdapter = new ListsAdapter(this.getActivity(), listNotifications);
+        final ListsAdapter listsAdapter = new ListsAdapter(this.getActivity(), listNotifications);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_list_item_1, listNotifications);
         mListView.setAdapter(listsAdapter);
 
         readContactData();
-
-
-        /********** Button Click pass textView object ***********/
-        Send.setOnClickListener(BtnAction(textView));
-
-        /********** Button Click clear textView object ***********/
-        Cancel.setOnClickListener(BtnActionClearInput(textView));
-
-        context = this.getActivity().getBaseContext();
-
-        Send.setOnClickListener( new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                clickCounter++;
-                listNotifications.add("Contact Number : "+ clickCounter + "\nName or Number: " + textView.getText().toString()+ "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
-                listsAdapter.notifyDataSetChanged();
-            }
-        });
-
+        Send.setOnClickListener(createNotification());
+        Cancel.setOnClickListener(clearInputs());
         return view;
     }
 
-    private View.OnClickListener BtnActionClearInput(final AutoCompleteTextView toNumber) {
-        return new View.OnClickListener() {
-
-            public void onClick(View v) {
-                toNumber.getText().clear();
+    private OnClickListener clearInputs() {
+        return new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                textView.getText().clear();
                 datesTextView.getText().clear();
                 timesTextView.getText().clear();
             }
         };
     }
 
-    private View.OnClickListener BtnAction(final AutoCompleteTextView toNumber) {
-        return new View.OnClickListener() {
-
-            public void onClick(View v) {
-
-                String NameSel = "";
-                NameSel = toNumber.getText().toString();
-
-
-                final String ToNumber = toNumberValue;
-
-
-                if (ToNumber.length() == 0) {
-                    Toast.makeText(context, "Please fill phone number",
+    private OnClickListener createNotification() {
+        return new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String selectedName = textView.getText().toString();
+//                final String toNumber = toNumberValue;
+                if (selectedName.length() == 0) {
+                    Toast.makeText(view.getContext(), "Please fill phone number",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context, NameSel + " : " + toNumberValue,
-                            Toast.LENGTH_LONG).show();
+                    clickCounter++;
+                    listNotifications.add("Contact Number : " + clickCounter + "\nName or Number: " + textView.getText().toString() + "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
+                    adapter.notifyDataSetChanged();
+//                    Toast.makeText(view.getContext(), selectedName + " : " + toNumberValue,
+//                            Toast.LENGTH_LONG).show();
                 }
-
             }
         };
     }
