@@ -91,7 +91,7 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
         mListView.setAdapter(listsAdapter);
 
         readContactData();
-        Send.setOnClickListener(createNotification());
+        Send.setOnClickListener(createListView());
         Cancel.setOnClickListener(clearInputs());
         return view;
     }
@@ -107,7 +107,7 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
         };
     }
 
-    private OnClickListener createNotification() {
+    private OnClickListener createListView() {
         return new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,8 +127,6 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
                     clickCounter++;
                     listNotifications.add("Contact Number : " + clickCounter + "\nName or Number: " + textView.getText().toString() + "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
                     adapter.notifyDataSetChanged();
-//                    Toast.makeText(view.getContext(), selectedName + " : " + toNumberValue,
-//                            Toast.LENGTH_LONG).show();
                 }
             }
         };

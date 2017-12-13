@@ -56,6 +56,8 @@ public class ListsAdapter extends BaseAdapter {
         TextView text = (TextView) vi.findViewById(R.id.text);
         text.setText(data.get(position));
         Switch switchButton = (Switch) vi.findViewById(R.id.switchId);
+        // Put true in switch button.
+        switchButton.setChecked(true);
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
