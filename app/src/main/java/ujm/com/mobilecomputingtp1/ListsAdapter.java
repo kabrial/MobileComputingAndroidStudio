@@ -62,10 +62,10 @@ public class ListsAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    Toast.makeText(context, "This is On", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Notifications On", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(context, "This is Off", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Notifications Off", Toast.LENGTH_LONG).show();
                 }
             }
         });
