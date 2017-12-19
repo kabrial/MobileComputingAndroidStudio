@@ -25,9 +25,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class CallNotification extends Fragment implements OnItemClickListener, OnItemSelectedListener {
 
-    // Initialize variables
-
-    AutoCompleteTextView textView = null;
+    private AutoCompleteTextView textView = null;
 
     // Store contacts values in these arraylist
     public static ArrayList<String> phoneValueArr = new ArrayList<>();
@@ -40,9 +38,7 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
     private EditText timesTextView = null;
 
     private final List<String> listNotifications = new ArrayList<>();
-
-    //RECORDING HOW MANY TIMES THE BUTTON HAS BEEN CLICKED
-    int clickCounter = 0;
+    private ListsAdapter listsAdapter;
 
     public static CallNotification newInstance() {
         return new CallNotification();
@@ -65,7 +61,7 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
         textView.setOnItemClickListener(this);
 
         ListView mListView = view.findViewById(R.id.listView);
-        final ListsAdapter listsAdapter = new ListsAdapter(getContext(), listNotifications);
+        listsAdapter = new ListsAdapter(getContext(), listNotifications);
         mListView.setAdapter(listsAdapter);
         return view;
     }
@@ -97,20 +93,19 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
             public void onClick(View view) {
                 String selectedName = textView.getText().toString();
                 String selectedDate = datesTextView.getText().toString();
-                String selectedTimes = timesTextView.getText().toString();
+                String selectedTime = timesTextView.getText().toString();
                 if (selectedName.length() == 0) {
                     Toast.makeText(getContext(), "Please fill phone number",
                             Toast.LENGTH_LONG).show();
                 } else if (selectedDate.length() == 0) {
                     Toast.makeText(getContext(), "Please fill date",
                             Toast.LENGTH_LONG).show();
-                } else if (selectedTimes.length() == 0) {
+                } else if (selectedTime.length() == 0) {
                     Toast.makeText(getContext(), "Please fill times",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    clickCounter++;
-                    listNotifications.add("Contact Number : " + clickCounter + "\nName or Number: " + textView.getText().toString() + "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
-//                    adapter.notifyDataSetChanged();
+                    listNotifications.add("Name or Number: " + selectedName + "\nDate: " + selectedDate + " Time: " + selectedTime);
+                    listsAdapter.notifyDataSetChanged();
                 }
             }
         };
