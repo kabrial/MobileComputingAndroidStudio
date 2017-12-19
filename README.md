@@ -1,7 +1,7 @@
 # Android Developement TP1
 ## Emulator or your device
 
-If you use emulator, you will have the API 22,23 or 24, because in this project, we use the notifications system about android.
+You can use an emulator with API 23 to 27, or your device.
 
 ## The name of Application: Applications Contacts
 

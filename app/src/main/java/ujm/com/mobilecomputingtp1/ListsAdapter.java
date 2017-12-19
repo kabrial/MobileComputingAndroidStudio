@@ -1,7 +1,12 @@
 package ujm.com.mobilecomputingtp1;
 
+import android.annotation.TargetApi;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +56,7 @@ public class ListsAdapter extends BaseAdapter {
         text.setText(data.get(position));
         Switch switchButton = view.findViewById(R.id.switchId);
         // Put true in switch button.
-        switchButton.setChecked(true);
+        switchButton.setChecked(false);
         switchButton.setOnCheckedChangeListener(switchChange());
         return view;
     }
@@ -71,12 +76,33 @@ public class ListsAdapter extends BaseAdapter {
         };
     }
 
+
+    @TargetApi(Build.VERSION_CODES.O)
     private void createNewCallNotification(String contactName) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+// The id of the channel.
+        String id = "my_channel_01";
+// The user-visible name of the channel.
+        CharSequence name = context.getString(R.string.channel_name);
+// The user-visible description of the channel.
+        String description = context.getString(R.string.channel_description);
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        NotificationChannel mChannel = new NotificationChannel(id, name, importance);
+// Configure the notification channel.
+        mChannel.setDescription(description);
+        mChannel.enableLights(true);
+// Sets the notification light color for notifications posted to this
+// channel, if the device supports this feature.
+        mChannel.setLightColor(Color.RED);
+        mChannel.enableVibration(true);
+        mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        mNotificationManager.createNotificationChannel(mChannel);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, id)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(contactName);
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(001, builder.build());
     }
 
