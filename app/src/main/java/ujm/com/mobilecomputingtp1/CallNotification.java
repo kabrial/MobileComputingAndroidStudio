@@ -1,10 +1,13 @@
 package ujm.com.mobilecomputingtp1;
 
 import android.app.Fragment;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,8 +54,7 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
     int clickCounter = 0;
 
     public static CallNotification newInstance() {
-        CallNotification fragment = new CallNotification();
-        return fragment;
+        return new CallNotification();
     }
 
     @Override
@@ -62,9 +64,7 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
         final Button Send = view.findViewById(R.id.Send);
         final Button Cancel = view.findViewById(R.id.Cancel);
 
-
         // Initialize AutoCompleteTextView values
-
         textView = view.findViewById(R.id.toNumber);
 
         // Initialize EditText values
@@ -91,7 +91,7 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
         mListView.setAdapter(listsAdapter);
 
         readContactData();
-        Send.setOnClickListener(createListView());
+        Send.setOnClickListener(addNotification());
         Cancel.setOnClickListener(clearInputs());
         return view;
     }
@@ -107,14 +107,14 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
         };
     }
 
-    private OnClickListener createListView() {
+    private OnClickListener addNotification() {
         return new OnClickListener() {
             @Override
             public void onClick(View view) {
                 String selectedName = textView.getText().toString();
                 String selectedDate = datesTextView.getText().toString();
                 String selectedTimes = timesTextView.getText().toString();
-                if (selectedName.length() == 0){
+                if (selectedName.length() == 0) {
                     Toast.makeText(view.getContext(), "Please fill phone number",
                             Toast.LENGTH_LONG).show();
                 } else if (selectedDate.length() == 0) {
@@ -126,10 +126,20 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
                 } else {
                     clickCounter++;
                     listNotifications.add("Contact Number : " + clickCounter + "\nName or Number: " + textView.getText().toString() + "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
+                    createNewCallNotification();
                     adapter.notifyDataSetChanged();
                 }
             }
         };
+    }
+
+    private void createNewCallNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext())
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!");
+        NotificationManager mNotificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(001, builder.build());
     }
 
 
