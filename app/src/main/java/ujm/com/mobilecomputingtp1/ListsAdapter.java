@@ -77,7 +77,7 @@ public class ListsAdapter extends BaseAdapter {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.O)
+
     private void createNewCallNotification(String contactName) {
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -88,16 +88,20 @@ public class ListsAdapter extends BaseAdapter {
 // The user-visible description of the channel.
         String description = context.getString(R.string.channel_description);
         int importance = NotificationManager.IMPORTANCE_HIGH;
-        NotificationChannel mChannel = new NotificationChannel(id, name, importance);
-// Configure the notification channel.
-        mChannel.setDescription(description);
-        mChannel.enableLights(true);
+        NotificationChannel mChannel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mChannel = new NotificationChannel(id, name, importance);
+            // Configure the notification channel.
+            mChannel.setDescription(description);
+            mChannel.enableLights(true);
 // Sets the notification light color for notifications posted to this
 // channel, if the device supports this feature.
-        mChannel.setLightColor(Color.RED);
-        mChannel.enableVibration(true);
-        mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-        mNotificationManager.createNotificationChannel(mChannel);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, id)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
