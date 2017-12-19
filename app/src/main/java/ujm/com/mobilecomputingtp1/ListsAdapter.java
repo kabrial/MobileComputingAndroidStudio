@@ -2,7 +2,9 @@ package ujm.com.mobilecomputingtp1;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
@@ -65,7 +67,9 @@ public class ListsAdapter extends BaseAdapter {
                 String text = b ? "Notifications On" : "Notifications Off";
                 if (b) {
                     Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-                    createNewCallNotification("Kevin");
+                    String name = data.get(data.size() - 1);
+                    createNewCallNotification(name);
+
                 } else {
                     Toast.makeText(context, text, Toast.LENGTH_LONG).show();
                 }
@@ -103,6 +107,9 @@ public class ListsAdapter extends BaseAdapter {
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(contactName);
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        builder.setContentIntent(pendingIntent);
         mNotificationManager.notify(Double.valueOf(Math.random() * 10).intValue(), builder.build());
     }
 
