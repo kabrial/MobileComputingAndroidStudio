@@ -1,13 +1,10 @@
 package ujm.com.mobilecomputingtp1;
 
 import android.app.Fragment;
-import android.app.NotificationManager;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,10 +84,10 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
         ListView mListView;
 
         mListView = view.findViewById(R.id.listView);
-        final ListsAdapter listsAdapter = new ListsAdapter(this.getActivity(), listNotifications);
+        final ListsAdapter listsAdapter = new ListsAdapter(getContext(), listNotifications);
         mListView.setAdapter(listsAdapter);
 
-        readContactData();
+//        readContactData();
         Send.setOnClickListener(addNotification());
         Cancel.setOnClickListener(clearInputs());
         return view;
@@ -126,22 +123,11 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
                 } else {
                     clickCounter++;
                     listNotifications.add("Contact Number : " + clickCounter + "\nName or Number: " + textView.getText().toString() + "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
-                    createNewCallNotification();
                     adapter.notifyDataSetChanged();
                 }
             }
         };
     }
-
-    private void createNewCallNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext())
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!");
-        NotificationManager mNotificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(001, builder.build());
-    }
-
 
     // Read phone contact name and phone numbers
 
