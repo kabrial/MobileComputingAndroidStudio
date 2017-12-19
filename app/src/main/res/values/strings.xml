@@ -10,4 +10,6 @@
     <string name="time_placeholder">Time...</string>
     <string name="date_placeholder">Date...</string>
     <string name="contact_placeholder">Number...</string>
+    <string name="channel_name">Application Contact</string>
+    <string name="channel_description">Notification Contact</string>
 </resources>
