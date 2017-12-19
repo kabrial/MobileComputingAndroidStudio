@@ -1,12 +1,9 @@
 package ujm.com.mobilecomputingtp1;
 
-import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +74,6 @@ public class ListsAdapter extends BaseAdapter {
     }
 
 
-
     private void createNewCallNotification(String contactName) {
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -107,7 +103,7 @@ public class ListsAdapter extends BaseAdapter {
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(contactName);
-        mNotificationManager.notify(001, builder.build());
+        mNotificationManager.notify(Double.valueOf(Math.random() * 10).intValue(), builder.build());
     }
 
 }
