@@ -1,24 +1,27 @@
-# Android Developement TP1
+# Android Development TP1
 
-## Emulator or your device
+## Emulator or device
 
-You can use an emulator with API 23 to 27, or your device.
+You can use an emulator or device with an API from 23 to 27.
 
-## The name of Application: Application Contacts
+## Application's Name: Application Contacts
 
-The application contacts is an application to create some notifications with the information, who the user is create in the list of item.
+The application contacts is an application to create call notifications with the information, who the user is create in the list of item.
 
-## Functionnalities for TP1
+## Functionalities for TP1
 
-We have two pages in this application, we use a menu, one is the home and the other for notifications.
+We have a menu and two pages in this application, one is the home and the other to create notifications.
 
 ## Home
 
 We have some text and a image for this page.
 
-## Notification
+## Notifications
 
-In this page, you will have 3 inputs (numbers, date, times), 2 buttons Ok (to create the list item) and Cancel (to clear all the input), and a list of item and a switch button to create the notification.
+In this page, we have:
+- 3 inputs: number, date and time.
+- 2 buttons: OK (to create the list item) and Cancel (to clear all the inputs)
+- A list of items, where each item has a switch button to create the notification.
 
 ## Functionalities for TP1
 
@@ -29,12 +32,13 @@ In this page, you will have 3 inputs (numbers, date, times), 2 buttons Ok (to cr
 - Create a button Cancel to clear all the input.
 - Create a notification with the switch button.
 - When you click on the notification, it opens the application.
+
 ## Functionalities for TP2
 
 - Add a datepicker.
-- Add a datetime.
-- Add a readcontact.
-- Keep existing data.
+- Add a timepicker.
+- Get the contact from contact list.
+- Maintain existing data using the onResume.
 
 ## Authors
 
