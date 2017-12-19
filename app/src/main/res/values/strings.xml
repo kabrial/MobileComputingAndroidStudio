@@ -4,9 +4,10 @@
     <string name="title_authors">Authors: Xavier NAUNAY and Kevin ABRIAL (Master 2 DSC). Welcome User, this application contacts is to use for create notifications calls</string>
     <string name="title_notifications">Notifications</string>
     <string name="action_close">Close</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="notification_title">Don\'t forget to call:</string>
+    <string name="time_placeholder">Time...</string>
+    <string name="date_placeholder">Date...</string>
+    <string name="contact_placeholder">Number...</string>
 </resources>

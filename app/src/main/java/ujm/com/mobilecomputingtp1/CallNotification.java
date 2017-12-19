@@ -1,10 +1,7 @@
 package ujm.com.mobilecomputingtp1;
 
 import android.app.Fragment;
-import android.content.ContentResolver;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +28,6 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
     // Initialize variables
 
     AutoCompleteTextView textView = null;
-    private ArrayAdapter<String> adapter;
 
     // Store contacts values in these arraylist
     public static ArrayList<String> phoneValueArr = new ArrayList<>();
@@ -40,12 +36,10 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
     String toNumberValue = "";
 
 
-    EditText datesTextView = null;
-    EditText timesTextView = null;
+    private EditText datesTextView = null;
+    private EditText timesTextView = null;
 
-    //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    // Initializing a new String Array
-    final List<String> listNotifications = new ArrayList<>();
+    private final List<String> listNotifications = new ArrayList<>();
 
     //RECORDING HOW MANY TIMES THE BUTTON HAS BEEN CLICKED
     int clickCounter = 0;
@@ -58,19 +52,11 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_call_notification, container, false);
-        final Button Send = view.findViewById(R.id.Send);
-        final Button Cancel = view.findViewById(R.id.Cancel);
-
-        // Initialize AutoCompleteTextView values
-        textView = view.findViewById(R.id.toNumber);
-
-        // Initialize EditText values
-        datesTextView = view.findViewById(R.id.dates);
-        timesTextView = view.findViewById(R.id.times);
+        initializeComponents(view);
 
         //Create adapter
-        adapter = new ArrayAdapter<>
-                (view.getContext(), android.R.layout.simple_dropdown_item_1line, new ArrayList<String>());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>
+                (getContext(), android.R.layout.simple_dropdown_item_1line, new ArrayList<String>());
         textView.setThreshold(1);
 
         //Set adapter to AutoCompleteTextView
@@ -78,19 +64,20 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
         textView.setOnItemSelectedListener(this);
         textView.setOnItemClickListener(this);
 
-        // Read contact data and add data to ArrayAdapter
-        // ArrayAdapter used by AutoCompleteTextView
-
-        ListView mListView;
-
-        mListView = view.findViewById(R.id.listView);
+        ListView mListView = view.findViewById(R.id.listView);
         final ListsAdapter listsAdapter = new ListsAdapter(getContext(), listNotifications);
         mListView.setAdapter(listsAdapter);
+        return view;
+    }
 
-//        readContactData();
+    private void initializeComponents(View view) {
+        final Button Send = view.findViewById(R.id.Send);
+        final Button Cancel = view.findViewById(R.id.Cancel);
         Send.setOnClickListener(addNotification());
         Cancel.setOnClickListener(clearInputs());
-        return view;
+        textView = view.findViewById(R.id.toNumber);
+        datesTextView = view.findViewById(R.id.date);
+        timesTextView = view.findViewById(R.id.time);
     }
 
     private OnClickListener clearInputs() {
@@ -112,110 +99,21 @@ public class CallNotification extends Fragment implements OnItemClickListener, O
                 String selectedDate = datesTextView.getText().toString();
                 String selectedTimes = timesTextView.getText().toString();
                 if (selectedName.length() == 0) {
-                    Toast.makeText(view.getContext(), "Please fill phone number",
+                    Toast.makeText(getContext(), "Please fill phone number",
                             Toast.LENGTH_LONG).show();
                 } else if (selectedDate.length() == 0) {
-                    Toast.makeText(view.getContext(), "Please fill date",
+                    Toast.makeText(getContext(), "Please fill date",
                             Toast.LENGTH_LONG).show();
                 } else if (selectedTimes.length() == 0) {
-                    Toast.makeText(view.getContext(), "Please fill times",
+                    Toast.makeText(getContext(), "Please fill times",
                             Toast.LENGTH_LONG).show();
                 } else {
                     clickCounter++;
                     listNotifications.add("Contact Number : " + clickCounter + "\nName or Number: " + textView.getText().toString() + "\nDate: " + datesTextView.getText().toString() + " Times: " + timesTextView.getText().toString());
-                    adapter.notifyDataSetChanged();
+//                    adapter.notifyDataSetChanged();
                 }
             }
         };
-    }
-
-    // Read phone contact name and phone numbers
-
-    private void readContactData() {
-
-        try {
-
-            /*********** Reading Contacts Name And Number **********/
-
-            String phoneNumber = "";
-            ContentResolver cr = this.getActivity().getBaseContext()
-                    .getContentResolver();
-
-            //Query to get contact name
-
-            Cursor cur = cr
-                    .query(ContactsContract.Contacts.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            null);
-
-            // If data data found in contacts
-            if (cur.getCount() > 0) {
-
-                Log.i("AutocompleteContacts", "Reading   contacts........");
-
-                int k = 0;
-                String name = "";
-
-                while (cur.moveToNext()) {
-
-                    String id = cur
-                            .getString(cur
-                                    .getColumnIndex(ContactsContract.Contacts._ID));
-                    name = cur
-                            .getString(cur
-                                    .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-
-                    //Check contact have phone number
-                    if (Integer
-                            .parseInt(cur
-                                    .getString(cur
-                                            .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-
-                        //Create query to get phone number by contact id
-                        Cursor pCur = cr
-                                .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                                        null,
-                                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-                                                + " = ?",
-                                        new String[]{id},
-                                        null);
-                        int j = 0;
-
-                        while (pCur
-                                .moveToNext()) {
-                            // Sometimes get multiple data
-                            if (j == 0) {
-                                // Get Phone number
-                                phoneNumber = "" + pCur.getString(pCur
-                                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
-                                // Add contacts names to adapter
-                                adapter.add(name);
-
-                                // Add ArrayList names to adapter
-                                phoneValueArr.add(phoneNumber.toString());
-                                nameValueArr.add(name.toString());
-
-                                j++;
-                                k++;
-                            }
-                        }  // End while loop
-                        pCur.close();
-                    } // End if
-
-                }  // End while loop
-
-            } // End Cursor value check
-            cur.close();
-
-
-        } catch (Exception e) {
-            Log.i("AutocompleteContacts", "Exception : " + e);
-        }
-
-
     }
 
     @Override

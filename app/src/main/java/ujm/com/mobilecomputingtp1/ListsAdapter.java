@@ -74,8 +74,8 @@ public class ListsAdapter extends BaseAdapter {
     private void createNewCallNotification(String contactName) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle(context.getString(R.string.app_name))
-                .setContentText("Make a call to: " + contactName);
+                .setContentTitle(context.getString(R.string.notification_title))
+                .setContentText(contactName);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(001, builder.build());
     }
