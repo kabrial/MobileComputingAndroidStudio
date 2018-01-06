@@ -12,4 +12,5 @@
     <string name="contact_placeholder">Number...</string>
     <string name="channel_name">Application Contact</string>
     <string name="channel_description">Notification Contact</string>
+    <string name="select">Select</string>
 </resources>

@@ -1,91 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:stretchColumns="*"
-    android:background="#ffffff">
+    android:layout_height="wrap_content">
 
-    <TableRow
+    <AutoCompleteTextView
+        android:id="@+id/toNumber"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:hint="@string/contact_placeholder"
+        android:textStyle="bold" />
 
-        <AutoCompleteTextView
-            android:id="@+id/toNumber"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="#000000"
-            android:textColorLink="#000000"
-            android:textStyle="bold"
-            android:hint="@string/contact_placeholder"/>
-    </TableRow>
-
-    <TableRow
+    <EditText
+        android:id="@+id/date"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="2dip">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/toNumber"
+        android:layout_toStartOf="@+id/btn_date"
+        android:hint="@string/date_placeholder"
+        android:inputType="date"
+        android:clickable="true"
+        android:focusable="true" />
 
-        <EditText
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="date"
-            android:hint="@string/date_placeholder"/>
-    </TableRow>
-
-    <TableRow
+    <Button
+        android:id="@+id/btn_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dip">
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/toNumber"
+        android:text="@string/select" />
 
-        <EditText
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="time"
-            android:hint="@string/time_placeholder"/>
-    </TableRow>
+    <EditText
+        android:id="@+id/time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/date"
+        android:layout_toStartOf="@+id/btn_date"
+        android:hint="@string/time_placeholder"
+        android:inputType="time" />
 
-    <TableRow
+    <Button
+        android:id="@+id/btn_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/date"
+        android:text="@string/select" />
+
+    <Button
+        android:id="@+id/Send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/ok" />
+
+    <Button
+        android:id="@+id/Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Send"
+        android:layout_centerInParent="true"
+        android:width="86dip"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/cancel" />
+
+    <ListView
+        android:id="@+id/reminders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="4dip">
+        android:layout_below="@id/Cancel" />
 
-        <Button
-            android:id="@+id/Send"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:width="86dip"
-            android:clickable="true"
-            android:text="@string/ok"
-            android:focusable="true" />
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="2dip">
-
-        <Button
-            android:id="@+id/Cancel"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:width="86dip"
-            android:clickable="true"
-            android:text="@string/cancel"
-            android:focusable="true" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-        </ListView>
-    </TableRow>
-</TableLayout>
+</RelativeLayout>
