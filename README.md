@@ -1,5 +1,10 @@
 # Android Development TP1
 
+## Settings
+
+At first, you will to go the Settings, in your device (or in the emulator), Settings > Apps & notifications > See all apps > Application Contacts > Permissions > Contacts "ON" & Phone "ON".
+:warning: If you do not that, when you click in notifications in the menu, the application crash.
+
 ## Emulator or device
 
 You can use an emulator or device with an API from 23 to 27.
